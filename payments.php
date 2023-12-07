@@ -21,7 +21,24 @@ if (isset($_SESSION['selected_bus_id'])) {
 } else {
     echo "No bus selected.";
 }
+$user_id = $_SESSION['user_id'];
+$first_name = $_SESSION['first_name'];
+$last_name = $_SESSION['last_name'];
+$email = $_SESSION['email'];
+$phone = $_SESSION['phone'];
+$rate = $_SESSION['rate'];
+$iin = $_SESSION['iin'];
+$bus_id = $_SESSION['selected_bus_id'];
+$seat_id = $_SESSION['selected_seat_id'];
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $stmt = $pdo->prepare('INSERT INTO tickets (bus_id, user_id, seat_id,first_name,last_name,rate,phone,email,iin, purchase_date) VALUES (?, ?, ?,?,?,?,?,?,?, NOW())');
+    $stmt->execute([$bus_id, $user_id,$seat_id, $first_name, $last_name, $rate, $phone,$email, $iin]);
+    $data = $stmt->fetch();
+
+    header('Location: cabinet.php');
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -146,8 +163,15 @@ if (isset($_SESSION['selected_bus_id'])) {
                     </div>
                 </div>
                 <div>
-                    <span class="city">Yerassyl Rymkul</span>
-                    <span>Place <?php echo $seat['seat_number'] ?></span>
+                    <span class="city"><?php echo $first_name. ' '. $last_name?></span><br>
+                    <span>Place:</span>
+                    <span class="city"><?php echo $seat['seat_number'] ?></span>
+                </div>
+                <div>
+                    <span>Phone number:</span>
+                    <span class="city"><?php echo $phone?></span><br>
+                    <span>Email:</span>
+                    <span class="city"><?php echo $email?></span>
                 </div>
             </div>
             <div class="payment-left-section">
@@ -173,7 +197,7 @@ if (isset($_SESSION['selected_bus_id'])) {
                             <p style="font-weight: 600; font-size: 20px"><?php echo $selectedBus['price'] ?> ₸</p>
                         </div>
                         <div class="card-data" style="display: none;">
-                            <form action="#" method="post">
+                            <form action="" method="post">
 
                                 <h1>Payment form</h1>
 
@@ -287,7 +311,7 @@ if (isset($_SESSION['selected_bus_id'])) {
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const timeLimit = 1;
+        const timeLimit = 15;
         let expirationTime = localStorage.getItem('expirationTime');
 
         if (!expirationTime) {

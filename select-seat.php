@@ -105,7 +105,8 @@ if (isset($_SESSION['selected_bus_id'])) {
             <div class="menu-section">
                 <div class="bus">
                     <div class="row">
-                        <?php foreach ($seats as $seat): ?>
+                        <?php for ($i = 0; $i < 8; $i++): ?>
+                            <?php $seat = $seats[$i]; ?>
                             <button class="seat <?php echo $seat['is_booked'] ? 'booked' : ''; ?>" onclick="selectSeat(this, <?php echo $seat['id']; ?>)">
                                 <?php if ($seat['is_booked']): ?>
                                     <span class="cross" style="color: #4b5563">✖</span>
@@ -113,7 +114,19 @@ if (isset($_SESSION['selected_bus_id'])) {
                                     <?php echo $seat['seat_number']; ?>
                                 <?php endif; ?>
                             </button>
-                        <?php endforeach; ?>
+                        <?php endfor; ?>
+                    </div>
+                    <div class="row">
+                        <?php for ($i = 8; $i < 16; $i++): ?>
+                            <?php $seat = $seats[$i]; ?>
+                            <button class="seat <?php echo $seat['is_booked'] ? 'booked' : ''; ?>" onclick="selectSeat(this, <?php echo $seat['id']; ?>)">
+                                <?php if ($seat['is_booked']): ?>
+                                    <span class="cross" style="color: #4b5563">✖</span>
+                                <?php else: ?>
+                                    <?php echo $seat['seat_number']; ?>
+                                <?php endif; ?>
+                            </button>
+                        <?php endfor; ?>
                     </div>
                 </div>
             </div>

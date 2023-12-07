@@ -18,6 +18,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $buses = $stmt->fetchAll();
     }
 }
+// Sorting logic
+if (isset($_GET['sorting'])) {
+    $sortingOption = $_GET['sorting'];
+    switch ($sortingOption) {
+        case 'price':
+            usort($buses, function($a, $b) {
+                return $a['price'] - $b['price'];
+            });
+            break;
+        case 'arrival':
+            usort($buses, function($a, $b) {
+                return strtotime($a['arrival_time']) - strtotime($b['arrival_time']);
+            });
+            break;
+        case 'departure':
+            usort($buses, function($a, $b) {
+                return strtotime($a['departure_time']) - strtotime($b['departure_time']);
+            });
+            break;
+        case 'rating':
+            array_multisort(array_column($buses, 'rating'), SORT_DESC, $buses);
+            break;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -89,79 +113,96 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             <button type="submit" style="color: white"> Search </button>
         </div>
     </form>
-    <div class="list-of-destinations">
-        <?php foreach ($buses as $bus): ?>
-            <div class="dest">
-                <div class="rating">
-                    <svg
-                            width="20"
-                            height="20"
-                            viewBox="0 0 20 20"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                                fill-rule="evenodd"
-                                clip-rule="evenodd"
-                                d="M10 14.3653L5.14917 16.67L6.15667 11.5688L2.5 7.82792L7.64917 7.18527L10 2.5L12.3508 7.18527L17.5 7.82792L13.8433 11.5688L14.8508 16.67L10 14.3653Z"
-                                fill="#F6C13A"
-                                stroke="#F6C13A"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                        ></path>
-                        <path
-                                d="M5.14917 16.6667L10 14.3625V8.43125V2.5L7.64917 7.18417L2.5 7.82667L6.15667 11.5667L5.14917 16.6667Z"
-                                fill="#F6C13A"
-                                stroke="#F6C13A"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                        ></path>
-                    </svg>
-                    <p class="main-rating"><?php echo $bus['rating']; ?></p>
-                    <p><?php echo $bus['bus_number']; ?>T</p>
-                </div>
-                <div class="dest-top">
-                    <div class="dest-left">
-                        <div class="time-start">
-                            <?php echo date("H:i", strtotime($bus['departure_time'])); ?>
-                            <p
-                                    style="
-                            color: #83878f;
-                            margin-left: 10px;
-                            font-size: 15px;
-                            font-weight: 400;
-                          "
-                            >
-                                <?php echo date("j M", strtotime($bus['departure_time'])); ?>
-                            </p>
-                        </div>
-                        <div class="place-start"><?php echo $bus['departure']; ?></div>
-                    </div>
-                    <div class="dest-right">
-                        <div class="time-end">
-                            <?php echo date("H:i", strtotime($bus['arrival_time'])); ?>
-                            <p
-                                    style="
-                            color: #83878f;
-                            margin-left: 10px;
-                            font-size: 15px;
-                            font-weight: 400;
-                          "
-                            >
-                                <?php echo date("j M", strtotime($bus['arrival_time'])); ?>
-                            </p>
-                        </div>
-                        <div class="place-end"><?php echo $bus['arrival']; ?></div>
-                    </div>
-                </div>
-                <div class="dest-under">
-                    <div class="dest-cost"><?php echo $bus['price']; ?>₸</div>
-                    <button onclick="setSelectedBusAndRedirect(<?php echo $bus['id'];?>)">Continue</button>
+    <div style="display: flex">
+        <?php if ($buses !=null): ?>
+            <div class="destination-left">
+                <div>
+                    <form class="sort-form" method="get" action="destinations.php">
+                        <input type="hidden" name="departure" value="<?= htmlspecialchars($departure) ?>" />
+                        <input type="hidden" name="arrival" value="<?= htmlspecialchars($arrival) ?>" />
+                        <input type="hidden" name="departure_time" value="<?= htmlspecialchars($departureTime) ?>" />
+                        <label><input type="radio" name="sorting" value="price" <?= isset($_GET['sorting']) && $_GET['sorting'] === 'price' ? 'checked' : '' ?> onchange="this.form.submit()">By price, cheapest first</label><br>
+                        <label><input type="radio" name="sorting" value="arrival" <?= isset($_GET['sorting']) && $_GET['sorting'] === 'arrival' ? 'checked' : '' ?> onchange="this.form.submit()">By arrival time</label><br>
+                        <label><input type="radio" name="sorting" value="departure" <?= isset($_GET['sorting']) && $_GET['sorting'] === 'departure' ? 'checked' : '' ?> onchange="this.form.submit()">By departure time</label><br>
+                        <label><input type="radio" name="sorting" value="rating" <?= isset($_GET['sorting']) && $_GET['sorting'] === 'rating' ? 'checked' : '' ?> onchange="this.form.submit()">By high rating</label><br>
+                    </form>
                 </div>
             </div>
-        <?php endforeach; ?>
+        <?php endif; ?>
+        <div class="list-of-destinations">
+            <?php foreach ($buses as $bus): ?>
+                <div class="dest">
+                    <div class="rating">
+                        <svg
+                                width="20"
+                                height="20"
+                                viewBox="0 0 20 20"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                    fill-rule="evenodd"
+                                    clip-rule="evenodd"
+                                    d="M10 14.3653L5.14917 16.67L6.15667 11.5688L2.5 7.82792L7.64917 7.18527L10 2.5L12.3508 7.18527L17.5 7.82792L13.8433 11.5688L14.8508 16.67L10 14.3653Z"
+                                    fill="#F6C13A"
+                                    stroke="#F6C13A"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                            ></path>
+                            <path
+                                    d="M5.14917 16.6667L10 14.3625V8.43125V2.5L7.64917 7.18417L2.5 7.82667L6.15667 11.5667L5.14917 16.6667Z"
+                                    fill="#F6C13A"
+                                    stroke="#F6C13A"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                            ></path>
+                        </svg>
+                        <p class="main-rating"><?php echo $bus['rating']; ?></p>
+                        <p><?php echo $bus['bus_number']; ?>T</p>
+                    </div>
+                    <div class="dest-top">
+                        <div class="dest-left">
+                            <div class="time-start">
+                                <?php echo date("H:i", strtotime($bus['departure_time'])); ?>
+                                <p
+                                        style="
+                                color: #83878f;
+                                margin-left: 10px;
+                                font-size: 15px;
+                                font-weight: 400;
+                              "
+                                >
+                                    <?php echo date("j M", strtotime($bus['departure_time'])); ?>
+                                </p>
+                            </div>
+                            <div class="place-start"><?php echo $bus['departure']; ?></div>
+                        </div>
+                        <div class="dest-right">
+                            <div class="time-end">
+                                <?php echo date("H:i", strtotime($bus['arrival_time'])); ?>
+                                <p
+                                        style="
+                                color: #83878f;
+                                margin-left: 10px;
+                                font-size: 15px;
+                                font-weight: 400;
+                              "
+                                >
+                                    <?php echo date("j M", strtotime($bus['arrival_time'])); ?>
+                                </p>
+                            </div>
+                            <div class="place-end"><?php echo $bus['arrival']; ?></div>
+                        </div>
+                    </div>
+                    <div class="dest-under">
+                        <div class="dest-cost"><?php echo $bus['price']; ?>₸</div>
+                        <button onclick="setSelectedBusAndRedirect(<?php echo $bus['id'];?>)">Continue</button>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
     </div>
 </div>
 <script>
@@ -179,6 +220,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         })
         window.location.href = 'select-seat.php';
     }
+
 </script>
 <div class="footer">
     <div class="footer_wrapper">

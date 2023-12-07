@@ -21,6 +21,17 @@ if (isset($_SESSION['selected_bus_id'])) {
 } else {
     echo "No bus selected.";
 }
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $_SESSION['first_name'] = $_POST['first_name'];
+    $_SESSION['last_name'] = $_POST['last_name'];
+    $_SESSION['email'] = $_POST['email'];
+    $_SESSION['phone'] = $_POST['phone'];
+    $_SESSION['rate'] = $_POST['rate'];
+    $_SESSION['iin'] = $_POST['iin'];
+
+    header('Location: payments.php');
+    exit();
+}
 ?>
 
 
@@ -79,7 +90,7 @@ if (isset($_SESSION['selected_bus_id'])) {
     </div>
 </div>
 <div class="container">
-    <form>
+    <form method="post" action="">
     <div class="menu-container">
         <div class="back-button"><a href="select-seat.php">< Back</a></div>
         <div class="buy-section">
@@ -163,7 +174,7 @@ if (isset($_SESSION['selected_bus_id'])) {
                     </label>
                 </div>
                 <div>
-                    <button class="proceed-button" formaction="payments.php" type="submit" style="color: #ffff">Proceed</button>
+                    <button class="proceed-button" type="submit" style="color: #ffff">Proceed</button>
                 </div>
             </div>
         </div>

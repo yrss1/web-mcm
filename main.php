@@ -54,24 +54,37 @@ checkAuthentication();
                     <div>Help</div>
                 </a>
             </div>
+            <div class="rules">
+                <a href="cabinet.php">
+                    <img src="icons/interrogation.png" />
+                    <div>Cabinet</div>
+                </a>
+            </div>
         </div>
     </div>
 </div>
     <div class="container">
-        <form class="find" method="get" action="destinations.php">
+        <div class="direction">
             <div>
-                <input type="text" placeholder="From" id="autocomplete" class="autocomplete" name="departure" autocomplete="off" value="<?php echo isset($_GET['departure']) ? htmlspecialchars($_GET['departure']) : ''; ?>"/>
             </div>
             <div>
-                <input type="text" placeholder="Where" name="arrival" id="autocomplete" class="autocomplete" autocomplete="off" value="<?php echo isset($_GET['arrival']) ? htmlspecialchars($_GET['arrival']) : ''; ?>"/>
+            <form class="find" method="get" action="destinations.php">
+                <div>
+                    <input type="text" placeholder="From" id="autocomplete" class="autocomplete" name="departure" autocomplete="off" value="<?php echo isset($_GET['departure']) ? htmlspecialchars($_GET['departure']) : ''; ?>"/>
+                </div>
+                <div>
+                    <input type="text" placeholder="Where" name="arrival" id="autocomplete" class="autocomplete" autocomplete="off" value="<?php echo isset($_GET['arrival']) ? htmlspecialchars($_GET['arrival']) : ''; ?>"/>
+                </div>
+                <div class="data">
+                    <input type="date" name="departure_time" value="<?php echo isset($_GET['departure_time']) ? htmlspecialchars($_GET['departure_time']) : ''; ?>"/>
+                </div>
+                <div class="search">
+                    <button type="submit" style="color: white"> Search </button>
+                </div>
+            </form>
             </div>
-            <div class="data">
-                <input type="date" name="departure_time" value="<?php echo isset($_GET['departure_time']) ? htmlspecialchars($_GET['departure_time']) : ''; ?>"/>
-            </div>
-            <div class="search">
-                <button type="submit" style="color: white"> Search </button>
-            </div>
-        </form>
+        </div>
+
         <div class="main-section">
             <h1 style="font-size: 20px">
                 Why it is better to buy bus tickets on E-BUS
