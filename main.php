@@ -68,20 +68,18 @@ checkAuthentication();
             <div>
             </div>
             <div>
-            <form class="find" method="get" action="destinations.php">
-                <div>
-                    <input type="text" placeholder="From" id="autocomplete" class="autocomplete" name="departure" autocomplete="off" value="<?php echo isset($_GET['departure']) ? htmlspecialchars($_GET['departure']) : ''; ?>"/>
-                </div>
-                <div>
-                    <input type="text" placeholder="Where" name="arrival" id="autocomplete" class="autocomplete" autocomplete="off" value="<?php echo isset($_GET['arrival']) ? htmlspecialchars($_GET['arrival']) : ''; ?>"/>
-                </div>
-                <div class="data">
-                    <input type="date" name="departure_time" value="<?php echo isset($_GET['departure_time']) ? htmlspecialchars($_GET['departure_time']) : ''; ?>"/>
-                </div>
-                <div class="search">
-                    <button type="submit" style="color: white"> Search </button>
-                </div>
-            </form>
+                <form class="find" method="get" action="destinations.php">
+                    <div class="find-input">
+                        <input type="text" placeholder="From" id="departureInput" class="autocomplete" name="departure" autocomplete="off" value="<?php echo isset($_GET['departure']) ? htmlspecialchars($_GET['departure']) : ''; ?>"/>
+                        <input type="text" placeholder="Where" id="arrivalInput" name="arrival" class="autocomplete" autocomplete="off" value="<?php echo isset($_GET['arrival']) ? htmlspecialchars($_GET['arrival']) : ''; ?>"/>
+                        <div class="data" style="display: flex">
+                            <input type="date" name="departure_time" id="departureTimeInput" value="<?php echo isset($_GET['departure_time']) ? htmlspecialchars($_GET['departure_time']) : ''; ?>"/>
+                        </div>
+                        <div class="search">
+                            <button type="submit" style="color: white"> Search </button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
 

@@ -99,18 +99,28 @@ if (isset($_GET['sorting'])) {
     </div>
 </div>
 <div class="container">
+
     <form class="find" method="get" action="destinations.php">
-        <div>
-            <input type="text" placeholder="From" id="autocomplete" class="autocomplete" name="departure" autocomplete="off" value="<?php echo isset($_GET['departure']) ? htmlspecialchars($_GET['departure']) : ''; ?>"/>
+        <div class="trip-type">
+            <label>
+                <input type="radio" name="trip_type" value="one_way" <?php echo (isset($_GET['trip_type']) && $_GET['trip_type'] === 'one_way') ? 'checked' : 'checked'; ?> onchange="toggleInputFields('one_way');">
+                One Way
+            </label>
+            <label>
+                <input type="radio" name="trip_type" value="round_trip" <?php echo (isset($_GET['trip_type']) && $_GET['trip_type'] === 'round_trip') ? 'checked' : ''; ?> onchange="toggleInputFields('round_trip');">
+                Round Trip
+            </label>
         </div>
-        <div>
-            <input type="text" placeholder="Where" name="arrival" id="autocomplete" class="autocomplete" autocomplete="off" value="<?php echo isset($_GET['arrival']) ? htmlspecialchars($_GET['arrival']) : ''; ?>"/>
-        </div>
-        <div class="data">
-            <input type="date" name="departure_time" value="<?php echo isset($_GET['departure_time']) ? htmlspecialchars($_GET['departure_time']) : ''; ?>"/>
-        </div>
-        <div class="search">
-            <button type="submit" style="color: white"> Search </button>
+        <div class="find-input">
+            <input type="text" placeholder="From" id="departureInput" class="autocomplete" name="departure" autocomplete="off" value="<?php echo isset($_GET['departure']) ? htmlspecialchars($_GET['departure']) : ''; ?>"/>
+            <input type="text" placeholder="Where" id="arrivalInput" name="arrival" class="autocomplete" autocomplete="off" value="<?php echo isset($_GET['arrival']) ? htmlspecialchars($_GET['arrival']) : ''; ?>"/>
+            <div class="data" style="display: flex">
+                <input type="date" name="departure_time" id="departureTimeInput" value="<?php echo isset($_GET['departure_time']) ? htmlspecialchars($_GET['departure_time']) : ''; ?>"/>
+                <input type="date" name="return_time" id="returnTimeInput" value="<?php echo isset($_GET['return_time']) ? htmlspecialchars($_GET['return_time']) : ''; ?>"/>
+            </div>
+            <div class="search">
+                <button type="submit" style="color: white"> Search </button>
+            </div>
         </div>
     </form>
     <div style="display: flex">
@@ -219,6 +229,28 @@ if (isset($_GET['sorting'])) {
             console.log(data);
         })
         window.location.href = 'select-seat.php';
+    }
+    document.addEventListener("DOMContentLoaded", function() {
+        // Check if trip type is stored in local storage
+        var storedTripType = localStorage.getItem('tripType');
+
+        // Set the initial visibility based on stored trip type
+        toggleInputFields(storedTripType || 'one_way');
+    });
+
+    function toggleInputFields(tripType) {
+        var departureInput = document.getElementById('departureInput');
+        var departureTimeInput = document.getElementById('departureTimeInput');
+        var returnTimeInput = document.getElementById('returnTimeInput');
+
+        if (tripType === 'one_way') {
+            returnTimeInput.style.display = 'none';
+        } else {
+            returnTimeInput.style.display = 'flex';
+        }
+
+        // Store the selected trip type in local storage
+        localStorage.setItem('tripType', tripType);
     }
 
 </script>

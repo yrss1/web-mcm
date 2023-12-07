@@ -36,6 +36,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute([$bus_id, $user_id,$seat_id, $first_name, $last_name, $rate, $phone,$email, $iin]);
     $data = $stmt->fetch();
 
+    $stmt = $pdo->prepare('UPDATE seats SET is_booked = true WHERE id = ?');
+    $stmt->execute([$seat_id]);
+
     header('Location: cabinet.php');
     exit();
 }
