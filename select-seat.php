@@ -64,7 +64,7 @@ if (isset($_SESSION['selected_bus_id'])) {
             </div>
             <div class="contacts">
                 <a href="contacts.php">
-                    <img src="icons/user.png" />
+                    <img src="icons/phone.png" />
                     <div>Contacts</div>
                 </a>
             </div>
@@ -72,6 +72,12 @@ if (isset($_SESSION['selected_bus_id'])) {
                 <a href="help.php">
                     <img src="icons/interrogation.png" />
                     <div>Help</div>
+                </a>
+            </div>
+            <div class="rules">
+                <a href="cabinet.php">
+                    <img src="icons/user.png" />
+                    <div>Cabinet</div>
                 </a>
             </div>
         </div>
@@ -131,7 +137,7 @@ if (isset($_SESSION['selected_bus_id'])) {
                 </div>
             </div>
             <div class="menu-section">
-                <div class="continue"><button id="continueLink" onclick="checkSeatSelection()">Continue</button></div>
+                <button id="continueLink" onclick="checkSeatSelection()" class="my-btn">Continue</button>
             </div>
         </div>
     </div>

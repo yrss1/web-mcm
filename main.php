@@ -44,7 +44,7 @@ checkAuthentication();
             </div>
             <div class="contacts">
                 <a href="contacts.php">
-                    <img src="icons/user.png" />
+                    <img src="icons/phone.png" />
                     <div>Contacts</div>
                 </a>
             </div>
@@ -56,7 +56,7 @@ checkAuthentication();
             </div>
             <div class="rules">
                 <a href="cabinet.php">
-                    <img src="icons/interrogation.png" />
+                    <img src="icons/user.png" />
                     <div>Cabinet</div>
                 </a>
             </div>

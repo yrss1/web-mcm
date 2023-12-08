@@ -8,6 +8,8 @@ $user_id = $_SESSION['user_id'];
 $stmt = $pdo->prepare('SELECT * FROM tickets WHERE user_id = ?');
 $stmt->execute([$user_id]);
 $tickets = $stmt->fetchAll();
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,6 +28,7 @@ $tickets = $stmt->fetchAll();
     />
     <title>E-bus</title>
 </head>
+
 <body>
 <div class="back-img">
     <div class="navbar">
@@ -50,7 +53,7 @@ $tickets = $stmt->fetchAll();
             </div>
             <div class="contacts">
                 <a href="contacts.php">
-                    <img src="icons/user.png" />
+                    <img src="icons/phone.png" />
                     <div>Contacts</div>
                 </a>
             </div>
@@ -58,6 +61,12 @@ $tickets = $stmt->fetchAll();
                 <a href="help.php">
                     <img src="icons/interrogation.png" />
                     <div>Help</div>
+                </a>
+            </div>
+            <div class="rules">
+                <a href="cabinet.php">
+                    <img src="icons/user.png" />
+                    <div>Cabinet</div>
                 </a>
             </div>
         </div>

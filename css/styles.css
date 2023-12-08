@@ -202,6 +202,7 @@ body {
     font-size: 20px;
     font-weight: 600;
 }
+
 .main-section {
     margin-top: 100px;
 }
@@ -644,6 +645,7 @@ a {
     background-color: #55BB06;
     border-radius: 6px;
     padding: 10px 70px;
+    border: #55BB06;
 }
 .payment-container {
     display: flex;
@@ -827,11 +829,35 @@ a {
 .destination-left {
     margin-right: 100px;
     margin-top: 20px;
+}
+.filter{
     background: #FFFFFF;
     font-size: 16px;
     border-radius: 10px;
     border: 1px solid rgba(0, 0, 0, 0.24);
-    height: 120px;
     width: 300px;
     padding: 10px;
+    margin-top: 20px;
+}
+.filter-btn {
+    background: #7284e4;
+    border: #7284e4;
+    padding: 10px;
+    border-radius: 5px;
+    color: #FFFFFF;
+    transition: background 0.3s;
+}
+.filter-btn:hover {
+    background: rgba(114, 132, 228, 0.8); /* задаем цвет с небольшой прозрачностью при hover */
+}
+.my-btn {
+    background: #55BB06;
+    border: #55BB06;
+    border-radius: 3px;
+    padding: 10px;
+    color: #FFFFFF;
+    transition: background 0.3s;
+}
+.my-btn:hover {
+    background: rgba(85, 187, 6, 0.8); /* изменяем цвет с небольшой прозрачностью при hover */
 }

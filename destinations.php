@@ -18,7 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $buses = $stmt->fetchAll();
     }
 }
-// Sorting logic
+$stmt = $pdo->prepare('SELECT * FROM routes');
+$stmt->execute();
+$routes = $stmt->fetchAll();
 if (isset($_GET['sorting'])) {
     $sortingOption = $_GET['sorting'];
     switch ($sortingOption) {
@@ -59,6 +61,12 @@ if (isset($_GET['sorting'])) {
             href="https://fonts.googleapis.com/css?family=Poppins"
             rel="stylesheet"
     />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!-- Include jQuery UI Autocomplete -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
     <title>E-bus</title>
 </head>
 <body>
@@ -85,7 +93,7 @@ if (isset($_GET['sorting'])) {
             </div>
             <div class="contacts">
                 <a href="contacts.php">
-                    <img src="icons/user.png" />
+                    <img src="icons/phone.png" />
                     <div>Contacts</div>
                 </a>
             </div>
@@ -93,6 +101,12 @@ if (isset($_GET['sorting'])) {
                 <a href="help.php">
                     <img src="icons/interrogation.png" />
                     <div>Help</div>
+                </a>
+            </div>
+            <div class="rules">
+                <a href="cabinet.php">
+                    <img src="icons/user.png" />
+                    <div>Cabinet</div>
                 </a>
             </div>
         </div>
@@ -125,8 +139,14 @@ if (isset($_GET['sorting'])) {
     </form>
     <div style="display: flex">
         <?php if ($buses !=null): ?>
-            <div class="destination-left">
-                <div>
+            <div class="destination-left" style="display: flex; flex-direction: column">
+                <div class="companies">
+                    <button class="filter-btn" onclick="">MRSS</button>
+                    <button class="filter-btn" onclick="">YRSSL</button>
+                    <button class="filter-btn" onclick="">MDX</button>
+                    <button class="filter-btn" onclick="">ALL</button>
+                </div>
+                <div class="filter">
                     <form class="sort-form" method="get" action="destinations.php">
                         <input type="hidden" name="departure" value="<?= htmlspecialchars($departure) ?>" />
                         <input type="hidden" name="arrival" value="<?= htmlspecialchars($arrival) ?>" />
@@ -171,6 +191,7 @@ if (isset($_GET['sorting'])) {
                         </svg>
                         <p class="main-rating"><?php echo $bus['rating']; ?></p>
                         <p><?php echo $bus['bus_number']; ?>T</p>
+                        <p style="color: #7284e4; margin-left: 10px"><?php echo $bus['company']; ?></p>
                     </div>
                     <div class="dest-top">
                         <div class="dest-left">
@@ -208,7 +229,7 @@ if (isset($_GET['sorting'])) {
                     </div>
                     <div class="dest-under">
                         <div class="dest-cost"><?php echo $bus['price']; ?>₸</div>
-                        <button onclick="setSelectedBusAndRedirect(<?php echo $bus['id'];?>)">Continue</button>
+                        <button onclick="setSelectedBusAndRedirect(<?php echo $bus['id'];?>)" class="my-btn">Continue</button>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -252,6 +273,21 @@ if (isset($_GET['sorting'])) {
         // Store the selected trip type in local storage
         localStorage.setItem('tripType', tripType);
     }
+    $(function() {
+        // Define an array of city names from your $routes variable
+        var cities = <?php echo json_encode(array_column($routes, 'name')); ?>;
+        console.log(cities);
+
+        // Initialize autocomplete for departure input
+        $("#departureInput").autocomplete({
+            source: cities
+        });
+
+        // Initialize autocomplete for arrival input
+        $("#arrivalInput").autocomplete({
+            source: cities
+        });
+    });
 
 </script>
 <div class="footer">

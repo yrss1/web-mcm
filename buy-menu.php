@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <div class="contacts">
                 <a href="contacts.php">
-                    <img src="icons/user.png" />
+                    <img src="icons/phone.png" />
                     <div>Contacts</div>
                 </a>
             </div>
@@ -84,6 +84,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <a href="help.php">
                     <img src="icons/interrogation.png" />
                     <div>Help</div>
+                </a>
+            </div>
+            <div class="rules">
+                <a href="cabinet.php">
+                    <img src="icons/user.png" />
+                    <div>Cabinet</div>
                 </a>
             </div>
         </div>
